@@ -9,7 +9,15 @@ borders = []
 
 for i in images:
     colors = np.unique(i)[1:]
-    borders.append([cv2.Canny(np.where(i == c, c, 0).astype('uint8'), 0, 255) for c in colors])
+    contours=[cv2.findContours(np.where(i == c, 255, 0).astype(np.uint8), mode=cv2.RETR_EXTERNAL, method=cv2.CHAIN_APPROX_SIMPLE)[0] for c in colors]
+    
+    for cnts in range(len(contours)):
+        print('color: '+ str(cnts))
+        for k in contours[cnts]:
+            k=k.reshape(-1,2)
+            poly = [(x + 0.5, y + 0.5) for x, y in zip(k[:,0], k[:,1])]
+            print(len(poly))
+
 
 # check the borders
 # try:
