@@ -40,6 +40,9 @@ def gen_via_json(path_base: str):
             )[1][0].reshape(-1, 2) for c in colors
         ]
 
+        # at least three points
+        contours = [c for c in contours if len(c) >= 3]
+
         # put them into dictionary
         this = roots[k]
         this["regions"] = {str(i): {
