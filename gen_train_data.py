@@ -6,7 +6,7 @@ import json
 path_origin_base = './task3_dataset/annotation/'
 
 
-def gen_coco_json(path_base: str):
+def gen_via_json(path_base: str):
     """ 
     Generate JSON file for training, 
     this function will tries to find the contour of each leaf in every images
@@ -50,7 +50,7 @@ def gen_coco_json(path_base: str):
             y, x = y.tolist(), x.tolist()
             this_region["all_points_x"], this_region["all_points_y"] = x, y
 
-    with open('coco.json', 'w') as outfile:
+    with open('via.json', 'w') as outfile:
         outfile.write(json.dumps(roots))
 
 
@@ -109,3 +109,4 @@ def gen_coco_json(path_base: str):
 
 
 gen_coco_json(path_origin_base)
+gen_via_json(path_origin_base)
