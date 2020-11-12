@@ -37,7 +37,7 @@ def gen_via_json(path_base: str):
                 image=np.where(i == c, c, 0).astype('uint8'),
                 mode=cv2.RETR_EXTERNAL,
                 method=cv2.CHAIN_APPROX_SIMPLE
-            )[1][0].reshape(-1, 2) for c in colors
+            )[0][0].reshape(-1, 2) for c in colors # for opencv4.0 there are only 2 return value.
         ]
 
         # at least three points
@@ -58,7 +58,7 @@ def gen_via_json(path_base: str):
             y = c[:, 1].tolist()
             this_region["all_points_x"], this_region["all_points_y"] = x, y
 
-    with open('coco.json', 'w') as outfile:
+    with open('via.json', 'w') as outfile:
         outfile.write(json.dumps(roots))
 
 
