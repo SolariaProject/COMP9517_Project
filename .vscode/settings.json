@@ -1,4 +1,4 @@
 {
     "python.pythonPath": "/usr/local/Caskroom/miniconda/base/envs/9517_project/bin/python",
-    "python.dataScience.jupyterServerURI": "local"
+    "jupyter.jupyterServerType": "local"
 }
