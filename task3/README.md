@@ -7,8 +7,8 @@
 ## Task 3
 
 **requirements**: 
-bash
-```
+
+```bash
 pip install split-folders 
 pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cu101/torch1.7/index.html (depends on pytorch version)
 ```
