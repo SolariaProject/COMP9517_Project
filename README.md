@@ -1,4 +1,4 @@
 # COMP9517_Project
 
 
-LaTex report
+LaTeX report

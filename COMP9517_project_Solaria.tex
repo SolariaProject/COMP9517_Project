@@ -298,6 +298,8 @@
 % Basically, \url{my_url_here}.
 
 
+\usepackage{caption}
+\usepackage{subcaption}
 
 
 % *** Do not adjust lengths that control margins, column widths, etc. ***
@@ -498,7 +500,7 @@ Image segmentation is the process of partitioning a digital image into multiple 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=\linewidth]{img/segmentation.png}
-\caption{In instance segmentation, we care about detection and segmentation of the instances of objects separately.}
+\caption{Object Detection and Segmentation}
 \label{fig_sim}
 \end{figure}
 
@@ -510,7 +512,7 @@ Instance segmentation is an approach that identifies, for every pixel, a belongi
 
 \subsection{Task 2}
 
-\subsection{Task 3}
+\subsection{Task 3 Instance Segmentation}
 
 It is a multi-instance segmentation problem. We use \textbf{Detectron 2}\cite{wu2019detectron2} which is FAIR's next-generation platform for object detection and segmentation. And we use \textbf{Mask-RCNN}\cite{He_2017} to approach our instance segmentation.
 
@@ -538,6 +540,42 @@ Because our dataset is not large, we use transfer learning \cite{pan2009survey} 
 IoU / Dice
 
 \section{Results and Discussion}
+
+\subsection{Task 1}
+
+\subsection{Task 2}
+
+\subsection{Task 3 Instance Segmentation}
+
+We use TensorBoard to visualize our training process data. 
+Shown on Fig.\ref{fig:loss for training process}
+
+\begin{figure}[h!]
+\centering
+\begin{subfigure}[h!]{0.24\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{img/loss_bbox_reg.png}
+    \caption{loss bbox reg}
+    \label{fig:loss_bbox}
+\end{subfigure}
+\hfill
+\begin{subfigure}[h!]{0.24\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{img/loss_cls.png}
+    \caption{loss classification}
+    \label{fig:loss_cls}
+\end{subfigure}
+\hfill
+\begin{subfigure}[h!]{0.24\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{img/loss_mask.png}
+    \caption{loss mask}
+    \label{fig:loss_mask}
+\end{subfigure}
+   \caption{loss}
+   \label{fig:loss for training process}
+\end{figure}
+
 
 
 \section{Conclusion}
