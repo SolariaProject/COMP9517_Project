@@ -158,7 +158,7 @@
 
 % *** MATH PACKAGES ***
 %
-%\usepackage{amsmath}
+\usepackage{amsmath}
 % A popular package from the American Mathematical Society that provides
 % many useful and powerful commands for dealing with mathematics.
 %
@@ -537,6 +537,12 @@ Because our dataset is not large, we use transfer learning \cite{pan2009survey} 
 
 \section{Experimental Setup}
 
+Intersection over Union (\textbf{IoU}), also known as \textbf{Jaccard index} is a statistic used for gauging the similarity and diversity of sample sets. The Jaccard coefficient measures similarity between finite sample sets, and is defined as the size of the intersection divided by the size of the union of the sample sets:
+
+\begin{equation}
+    J(A,B)=\frac{|A\cap B|}{|A\cup B|}
+\end{equation}
+
 IoU / Dice
 
 \section{Results and Discussion}
@@ -548,14 +554,14 @@ IoU / Dice
 \subsection{Task 3 Instance Segmentation}
 
 We use TensorBoard to visualize our training process data. 
-Shown on Fig.\ref{fig:loss for training process}
+Shown on Fig.\ref{fig:loss for training process}.
 
 \begin{figure}[h!]
 \centering
 \begin{subfigure}[h!]{0.24\textwidth}
     \centering
     \includegraphics[width=\textwidth]{img/loss_bbox_reg.png}
-    \caption{loss bbox reg}
+    \caption{loss bbox regression}
     \label{fig:loss_bbox}
 \end{subfigure}
 \hfill
@@ -572,10 +578,73 @@ Shown on Fig.\ref{fig:loss for training process}
     \caption{loss mask}
     \label{fig:loss_mask}
 \end{subfigure}
-   \caption{loss}
+\hfill
+\begin{subfigure}[h!]{0.24\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{img/loss_rpn_cls.png}
+    \caption{loss RPN classification}
+    \label{fig:loss_rpn_cls}
+\end{subfigure}
+\hfill
+\begin{subfigure}[h!]{0.24\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{img/loss_rpn_loc.png}
+    \caption{loss RPN loc}
+    \label{fig:loss_rpn_loc}
+\end{subfigure}
+\hfill
+\begin{subfigure}[h!]{0.24\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{img/loss_total.png}
+    \caption{total loss}
+    \label{fig:loss_total}
+\end{subfigure}
+   \caption{loss for training process}
    \label{fig:loss for training process}
 \end{figure}
 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{img/ap_maskrcnn.png}
+    \caption{Mask RCNN}
+    \label{fig_ap}
+\end{figure}
+
+Here are some prediction results. Refer to Fig. \ref{fig:prediction}.
+This result of this model shows quite good.
+
+\begin{figure}[h!]
+\centering
+\begin{subfigure}[h!]{0.24\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{img/pred1.png}
+    % \caption{loss bbox regression}
+    % \label{fig:loss_bbox}
+\end{subfigure}
+\hfill
+\begin{subfigure}[h!]{0.24\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{img/pred2.png}
+    % \caption{loss classification}
+    % \label{fig:loss_cls}
+\end{subfigure}
+\hfill
+\begin{subfigure}[h!]{0.4\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{img/pred3.png}
+    % \caption{loss mask}
+    % \label{fig:loss_mask}
+\end{subfigure}
+\caption{Prediction sample}
+\label{fig:prediction}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{img/iou_evl.png}
+    \caption{Evaluation IoU}
+    \label{fig_ap}
+\end{figure}
 
 
 \section{Conclusion}
@@ -584,14 +653,10 @@ The conclusion goes here.
 % conference papers do not normally have an appendix
 
 
-% use section* for acknowledgment
-\section*{Acknowledgment}
-
-
-The authors would like to thank...
-
 \section{Contribution of Group Members}
 
+
+Task 3:  Yishun Jin, Wei Wang
 
 
 % trigger a \newpage just before the given reference
