@@ -350,7 +350,8 @@ intro for dataset
 
 \section{Literature Review}
 
-blablablabla
+Instance segmentation \cite{Hafiz_2020} is an approach that identifies, for every pixel, a belonging instance of the object.
+There are many ways to approach instance segmentation, for example, clustering KMeans algorithm, histogram-based methods, edge detection, and also deep learning methods.
 
 \section{Methods}
 
@@ -362,7 +363,7 @@ blablablabla
 
 It is a multi-instance segmentation problem. We use \textbf{Detectron 2}\cite{wu2019detectron2} which is FAIR's next-generation platform for object detection and segmentation. And we use \textbf{Mask-RCNN}\cite{He_2017} to approach our instance segmentation.
 
-\textbf{Mask R-CNN} is a state-of-the-art model for instance segmentation. Mask-RCNN can be easily considered as ResNet-FPN + Fast-RCNN + mask.
+\textbf{Mask R-CNN} is a state-of-the-art model for instance segmentation. It can be easily considered as ResNet-FPN + Fast-RCNN + mask.
 
 \begin{figure}[h!]
 \centering
@@ -383,7 +384,7 @@ For our implementation, we convert *\_label.png into mask image and write a adap
 the original dataset can be splitted into a training set and testing set by our python script.
 
 Because our dataset is not large, and many information like image features can be commonly reused by the different datasets, 
-transfer learning \cite{pan2009survey} is used for the training process.
+transfer learning \cite{pan2009survey} is used in this project for the training process.
 Use the provided pre-trained weight for MS COCO dataset\cite{Lin_2014}.
 
 After data preparation and model construction, the next step is to train the mask-rcnn network.
@@ -518,7 +519,7 @@ and some leaves are overlapped with each other. Even human beings cannot disting
     % \label{fig:loss_cls}
 \end{subfigure}
 \hfill
-\begin{subfigure}[h!]{0.4\textwidth}
+\begin{subfigure}[h!]{0.24\textwidth}
     \centering
     \includegraphics[width=\textwidth]{img/ara2013_plant162.png}
     % \caption{loss mask}
@@ -528,7 +529,7 @@ and some leaves are overlapped with each other. Even human beings cannot disting
 \label{fig:bad_result}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[h]
     \centering
     \includegraphics[width=\linewidth]{img/iou_evl.png}
     \caption{Evaluation IoU}
