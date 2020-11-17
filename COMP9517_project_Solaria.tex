@@ -350,8 +350,8 @@ intro for dataset
 
 \section{Literature Review}
 
-Instance segmentation \cite{Hafiz_2020} is an approach that identifies, for every pixel, a belonging instance of the object.
-There are many ways to approach instance segmentation, for example, clustering KMeans algorithm, histogram-based methods, edge detection, and also deep learning methods.
+For the task 3, we used instance segmentation \cite{Hafiz_2020} which is an approach that identifies, for every pixel, a belonging instance of the object.
+There are many ways to approach instance segmentation, for example, K-Means clustering algorithm, histogram-based methods, edge detection, and also deep learning methods. The segmentation of foreground can be achieved using non-machine learning method. But when it comes to the segmentation of leaves inside of the foreground, most methods available are usually machine learning methods. Therefore, to achieve the goal, we used a deep learning model from facebook called the \textbf{Detectron2}. 
 
 \section{Methods}
 
@@ -392,15 +392,54 @@ The training phase is a process to update model parameters and alternate forward
 And the results look pretty good.
 
 \section{Experimental Setup}
+\subsection{Task 1}
 
-Intersection over Union (\textbf{IoU}), also known as \textbf{Jaccard index} and \textbf{Dice} are used to evaluate our model.
+\subsection{Task2}
+
+\subsection{Task 3}
+
+There are two major problems we've met when finishing this task: 
+\begin{itemize}
+\item Prepare data for training
+\item Evaluating model
+\end{itemize}
+The reason why the preparation of data becomes hard is because the model we used requires a JSON file to describe features. And the JSON file consists of lots of information, including the names of the files, sizes of files and a few points containing the contours of desired objects. It takes several steps to convert the images to JSON file. 
+
+We first split a label image into several parts \ref{fig_conversion_1}. This allows us to find the contour of the leaves.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{img/conversion_1.png}
+    \caption{Pick single leaves}
+    \label{fig_conversion_1}
+\end{figure}
+To find the contours of the leaves, we can use \verb|cv2.Canny| or \verb|cv2.findContours|. But as the model only need a few points describing the contours, we pick \verb|cv2.findContours| with parameter \verb|method| set to \verb|cv2.CHAIN_APPROX_SIMPLE| and \verb|mode| set to \verb|cv2.RETR_EXTERNAL|. This will generate a series of denoting a polygon which contains the leaf. 
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.75\linewidth]{img/conversion_2_label_2_scaled_up.png}
+    \caption{After Processing }
+    \label{fig_conversion_2}
+\end{figure}
+After we get the contours, we can just pick the points in the image and then put them into the JSON file, the preparation of the training data is done.
+
+The second problem is the evaluation. Because we performed the conversion from label images to JSON file, we don't know the relationship of the labels between segmentation output of the model and given segmentation. Also, the model is not giving us any information about the relation needed for evaluation - which colour maps back to which section of the JSON file. 
+
+Finally, we found the model provided us with the \verb|COCOEvaluator|, which uses the Intersection over Union (\textbf{IoU}) to do the assessment. The Intersection over Union (\textbf{IoU}), also known as \textbf{Jaccard index} is a statistic used for gauging the similarity and diversity of sample sets. The Jaccard coefficient measures similarity between finite sample sets, and is defined as the size of the intersection divided by the size of the union of the sample sets:
 
 \begin{equation}
     J(A,B)=\frac{|A\cap B|}{|A\cup B|}
+    \label{eq:IoU}
 \end{equation}
+You can see this evaluation is pretty close to \textbf{Dice's coefficient}. 
 
-IoU / Dice
+\begin{equation}
+	DSC = \frac{2|X \cap Y|}{|X| + |Y|}
+	\label{eq:Dice}
+\end{equation}
+So we looked into the source code of the \verb|COCOEvaluator| and we found a function called \verb|pairwise_iou| which evaluates the result with equation 1. This makes things easier, we can create a \verb|DiceEvaluator| by replacing different function. But we don't want to modify the source code because this makes code harder to maintain. So we created a class called \verb|DiceEvaluator| which inherits the \verb|COCOEvaluator| and a function called \verb|pairwise_dice| which replaces the \verb|pairwise_iou|. 
 
+Though this solution provides us with some flexibility, we are not having fully control over the output. This means that the \verb|DiceEvaluator| always suggests the result is calculated using formula 1. So please notice, in the next section, the output are actually using \textbf{Dice's coefficient} to evaluate the model, not the \textbf{IoU} 
 
 
 \section{Results and Discussion}
