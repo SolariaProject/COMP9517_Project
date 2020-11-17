@@ -405,7 +405,7 @@ There are two major problems we've met when finishing this task:
 \end{itemize}
 The reason why the preparation of data becomes hard is because the model we used requires a JSON file to describe features. And the JSON file consists of lots of information, including the names of the files, sizes of files and a few points containing the contours of desired objects. It takes several steps to convert the images to JSON file. 
 
-We first split a label image into several parts \ref{fig_conversion_1}. This allows us to find the contour of the leaves.
+We first split a label image into several parts \ref{fig_conversion_1}. This allows us to find the contours of the leaves.
 
 \begin{figure}[h!]
     \centering
@@ -413,7 +413,7 @@ We first split a label image into several parts \ref{fig_conversion_1}. This all
     \caption{Pick single leaves}
     \label{fig_conversion_1}
 \end{figure}
-To find the contours of the leaves, we can use \verb|cv2.Canny| or \verb|cv2.findContours|. But as the model only need a few points describing the contours, we pick \verb|cv2.findContours| with parameter \verb|method| set to \verb|cv2.CHAIN_APPROX_SIMPLE| and \verb|mode| set to \verb|cv2.RETR_EXTERNAL|. This will generate a series of denoting a polygon which contains the leaf. 
+To find the contours of the leaves, we can use \verb|cv2.Canny| or \verb|cv2.findContours|. But as the model only need a few points describing the contours, we pick \verb|cv2.findContours| with parameter \verb|method| set to \verb|cv2.CHAIN_APPROX_SIMPLE| and \verb|mode| set to \verb|cv2.RETR_EXTERNAL|. This will generate a series of points denoting a polygon which contains the leaf. 
 
 \begin{figure}[h!]
     \centering
@@ -421,11 +421,11 @@ To find the contours of the leaves, we can use \verb|cv2.Canny| or \verb|cv2.fin
     \caption{After Processing }
     \label{fig_conversion_2}
 \end{figure}
-After we get the contours, we can just pick the points in the image and then put them into the JSON file, the preparation of the training data is done.
+After we got the contours, we can just pick the points in the image and then put them into the JSON file, the preparation of the training data is done.
 
-The second problem is the evaluation. Because we performed the conversion from label images to JSON file, we don't know the relationship of the labels between segmentation output of the model and given segmentation. Also, the model is not giving us any information about the relation needed for evaluation - which colour maps back to which section of the JSON file. 
+The second problem is the evaluation. Because we performed the conversion from label images to JSON file, we don't know the relationship of the labels between the output of the model and given labels. Also, the model is not giving us any information about the relation needed for evaluation - which colour maps back to which section of the JSON file. 
 
-Finally, we found the model provided us with the \verb|COCOEvaluator|, which uses the Intersection over Union (\textbf{IoU}) to do the assessment. The Intersection over Union (\textbf{IoU}), also known as \textbf{Jaccard index} is a statistic used for gauging the similarity and diversity of sample sets. The Jaccard coefficient measures similarity between finite sample sets, and is defined as the size of the intersection divided by the size of the union of the sample sets:
+Finally, we found the model provided us with the \verb|COCOEvaluator|, which uses the Intersection over Union (\textbf{IoU}) to do the assessment. The Intersection over Union (\textbf{IoU}), also known as \textbf{Jaccard index} is a statistic used for gauging the similarity and diversity of sample sets. The \textbf{Jaccard index} measures similarity between finite sample sets, and is defined as the size of the intersection divided by the size of the union of the sample sets:
 
 \begin{equation}
     J(A,B)=\frac{|A\cap B|}{|A\cup B|}
