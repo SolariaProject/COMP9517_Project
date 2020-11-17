@@ -350,8 +350,8 @@ intro for dataset
 
 \section{Literature Review}
 
-For the task 3, we used instance segmentation \cite{Hafiz_2020} which is an approach that identifies, for every pixel, a belonging instance of the object.
-There are many ways to approach instance segmentation, for example, K-Means clustering algorithm, histogram-based methods, edge detection, and also deep learning methods. The segmentation of foreground can be achieved using non-machine learning method. But when it comes to the segmentation of leaves inside of the foreground, most methods available are usually machine learning methods. Therefore, to achieve the goal, we used a deep learning model from facebook called the \textbf{Detectron2}. 
+For task 3, we used instance segmentation \cite{Hafiz_2020} which is an approach that identifies, for every pixel, a belonging instance of the object.
+There are many ways to approach instance segmentation, for example, K-Means clustering algorithm, histogram-based methods, edge detection, and also deep learning methods. The segmentation of the foreground can be achieved using non-machine learning method. But when it comes to the segmentation of leaves inside of the foreground, most methods available are usually machine learning methods. Therefore, to achieve the goal, we used a deep learning framework from facebook called  \textbf{Detectron2}. 
 
 \section{Methods}
 
@@ -374,14 +374,15 @@ It is a multi-instance segmentation problem. We use \textbf{Detectron 2}\cite{wu
 
 To understand Mask R-CNN, it works mainly in two stages:
 
-\textbf{Stage1:} The first stage consists of two networks, backbone (ResNet, VGG, Inception, etc..) and region proposal network. These networks run once per image to give a set of region proposals. Region proposals are regions in the feature map which contain the object.
+\textbf{Stage1:} The first stage consists of two networks, backbone (ResNet, VGG, Inception, etc..) and region proposal network. These networks are used to find the regions of interest.
 
-\textbf{Stage2:} In the second stage, the network predicts bounding boxes which is similar to what we have done on Task 1 and object class for each of the proposed region obtained in stage1, in our project this is only one object plant leaf. 
-Each proposed region can be of different size whereas fully connected layers in the networks always require fixed size vector to make predictions. Size of these proposed regions is fixed by using either RoI pool (which is very similar to MaxPooling) or RoIAlign method.
-The output from RoIAlign layer is then fed into Mask head, which consists of two convolution layers. Mask can be generated for each RoI, thus segmenting leaves pixel-to-pixel.
+\textbf{Stage2:} In the second stage, the network predicts bounding boxes which is similar to what we have done in Task 1 and object class for each of the proposed region obtained in stage1, in our project this is only one object plant leaf. 
+Either RoI pool or RoIAlign method is used to fix the size of each proposal region.
+The output from RoIAlign layer is then fed into Mask head, which consists of two convolution layers.
+Mask can be generated for each RoI, thus segmenting leaves pixel-to-pixel.
 
-For our implementation, we convert *\_label.png into mask image and write a adapter for loading dataset.
-the original dataset can be splitted into a training set and testing set by our python script.
+For our implementation, we convert *\_label.png into mask images and write an adapter for loading dataset.
+the original dataset can be split into a training set and testing set by our python script.
 
 Because our dataset is not large, and many information like image features can be commonly reused by the different datasets, 
 transfer learning \cite{pan2009survey} is used in this project for the training process.
@@ -450,7 +451,7 @@ Though this solution provides us with some flexibility, we are not having fully 
 
 \subsection{Task 3 Instance Segmentation}
 
-TensorBoard are used to visualize our training process.
+TensorBoard is used to visualize our training process.
 Shown on Fig.\ref{fig:loss for training process}.
 During the increase of iterations, the model gets stable.
 And the total loss drops ideally.
