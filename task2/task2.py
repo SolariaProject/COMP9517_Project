@@ -6,7 +6,7 @@ from scipy.cluster.vq import *
 from sklearn.svm import LinearSVC
 from sklearn import metrics
 from collections import defaultdict
-base_path = './Plant_Phenotyping_Datasets'
+base_path = './dataset'
 
 
 if __name__=='__main__':
