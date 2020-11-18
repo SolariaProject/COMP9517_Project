@@ -21,7 +21,7 @@ from detectron2.utils.visualizer import ColorMode
 
 
 def get_leaf_dicts(img_dir):
-
+    img_dir = os.path.join("task3",img_dir) # for running in project root
     json_file = os.path.join(img_dir, "via.json")
     with open(json_file) as f:
         imgs_anns = json.load(f)
@@ -84,12 +84,15 @@ cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 512
 cfg.MODEL.ROI_HEADS.NUM_CLASSES = 1
 
 # path to the model we just trained
-cfg.MODEL.WEIGHTS = os.path.join(cfg.OUTPUT_DIR, "model_final.pth")
+cfg.MODEL.WEIGHTS = os.path.join("./task3/output", "model_final.pth") # running in project root
 cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.7   # set a custom testing threshold
 predictor = DefaultPredictor(cfg)
 
 
 dataset_dicts = get_leaf_dicts("leaf/val")
+
+os.mkdir('task3_out') 
+
 for d in random.sample(dataset_dicts, 3):
     # for d in dataset_dicts:
     im = cv2.imread(d["file_name"])
@@ -114,6 +117,6 @@ for d in random.sample(dataset_dicts, 3):
 
     # cv2_imshow(mask)
     fname = os.path.basename(d['file_name'])
-    cv2.imwrite('val_pred/rgb_mask_'+fname, mask)
-    cv2.imwrite('val_pred/'+fname, out.get_image()[:, :, ::-1])
+    cv2.imwrite('task3_out/rgb_mask_'+fname, mask)
+    cv2.imwrite('task3_out/'+fname, out.get_image()[:, :, ::-1])
     # cv2_imshow(out.get_image()[:, :, ::-1])
