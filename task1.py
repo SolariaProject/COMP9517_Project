@@ -3,9 +3,9 @@ import numpy as np
 import os
 
 ## Read
-path1 = '\Tray\Ara2012\\'
-path2 = '\Tray\Ara2013-Canon\\'
-path3 = '\Tray\Ara2013-RPi\\'
+path1 = '/Tray\Ara2012/'
+path2 = '/Tray\Ara2013-Canon/'
+path3 = '/Tray\Ara2013-RPi/'
 
 ###########################################
 ## change work path here !!!
@@ -16,11 +16,11 @@ work_path = os.getcwd()#get working path
 ###########################################
 
 
-task = '\Task1_out'
+task = '/Task1_out'
 folder = work_path + task
-folder1 = work_path + task + '\Ara12_Results'
-folder2 = work_path + task + '\Ara13_Results'
-folder3 = work_path + task + '\AraRPI_Results'
+folder1 = work_path + task + '/Ara12_Results'
+folder2 = work_path + task + '/Ara13_Results'
+folder3 = work_path + task + '/AraRPI_Results'
  
 
 # three folders, use to store the output
@@ -194,11 +194,11 @@ def operator(img,name,fold_name,task,mode):
     if mode == 3:
         precision = 24/count
     ## save 
-    work_path = os.getcwd() + task + '\\' + fold_name
+    work_path = os.getcwd() + task + '/' + fold_name
     tmp = name.split('_')[1]
-    np.savetxt(work_path + '\\' + tmp + '_.csv', csv, delimiter=",",fmt = '%d')
-    cv2.imwrite(work_path + '\\' + tmp + '_rect.png', ori)
-    cv2.imwrite(work_path + '\\' + tmp + '_green.png', green)
+    np.savetxt(work_path + '/' + tmp + '_.csv', csv, delimiter=",",fmt = '%d')
+    cv2.imwrite(work_path + '/' + tmp + '_rect.png', ori)
+    cv2.imwrite(work_path + '/' + tmp + '_green.png', green)
     # cv2.imwrite(work_path + '\\' + tmp + '_gray.png',gray)
     return count,precision 
 
@@ -226,21 +226,21 @@ for i in list_Ara12:
     result,precision = operator(img,i,fold_name1,task,1)
     Area_Ara12.append(result)
     precision_12.append(precision)
-print('Averave precision of Ara2012 is {}'.format(round(np.mean(precision_12),3)))
+print('Average precision of Ara2012 is {}'.format(round(np.mean(precision_12),3)))
 
 for i in list_Ara13:
     img = cv2.imread(work_path+path2+i)
     result,precision = operator(img,i,fold_name2,task,2)
     Area_Ara13.append(result)
     precision_13.append(precision)
-print('Averave precision of Canon is {}'.format(round( np.mean(precision_13),3 )))
+print('Average precision of Canon is {}'.format(round( np.mean(precision_13),3 )))
 
 for i in list_RPI:
     img = cv2.imread(work_path+path3+i)
     result,precision = operator(img,i,fold_name3,task,3)
     Area_RPI.append(result)
     precision_RPI.append(precision)
-print('Averave precision of RPi is {}'.format(round(np.mean(precision_RPI),3)))
+print('Average precision of RPi is {}'.format(round(np.mean(precision_RPI),3)))
 # print numbers of plants found in the three datasets
 print('number of plants found in Ara2012:')
 print(Area_Ara12)
