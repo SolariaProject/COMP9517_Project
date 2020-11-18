@@ -1,6 +1,7 @@
 from detectron2.evaluation import COCOEvaluator, inference_on_dataset
 from detectron2.data import build_detection_test_loader
-from detectron2.structures import Boxes, BoxMode, pairwise_intersection
+from detectron2.structures import Boxes, BoxMode
+from detectron2.structures.boxes import pairwise_intersection
 import torchvision
 
 # modifications of detectron2.structures.pairwise_iou
