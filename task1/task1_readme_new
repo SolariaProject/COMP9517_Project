@@ -1,0 +1,10 @@
+requirements:
+pip install python-opencv 
+pip install numpy
+
+For changing the path:
+change the workpath, which is shown on the top of program
+For example, Tray is at E:\course\9517\project\dataset\Tray
+the path should be E:\course\9517\project\dataset\
+
+Results will be stored at at the same location as where task1.py.
