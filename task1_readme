@@ -1,0 +1,5 @@
+运行方式： python task1.py
+需要运行目录下有 名为 Tray的文件夹，Tray文件夹下有三个子文件夹，分别为 Ara2012  Ara2013-Canon  Ara2013-RPi
+所以完整的目录是例如： Tray\Ara2012 这样
+输出时会创建一个文件夹名为Task1_output，其下会有三个子文件夹Ara12_Results，Ara13_Results，AraRPi_Results
+以上，木有了，orz
