@@ -2,6 +2,11 @@ from cv2 import cv2
 import numpy as np
 import os
 
+
+# base_path = './Plant_Phenotyping_Datasets'
+base_path = './dataset'
+output_path='./Task1_out'
+
 ## Read
 path1 = '/Tray/Ara2012/'
 path2 = '/Tray/Ara2013-Canon/'
@@ -10,18 +15,11 @@ path3 = '/Tray/Ara2013-RPi/'
 ###########################################
 ## change work path here !!!
 
-work_path = os.getcwd()#get working path
+# work_path = os.getcwd()#get working path
 
 ## change work path here !!!
 ###########################################
 
-
-task = '/Task1_out'
-folder = work_path + task
-folder1 = work_path + task + '/Ara12_Results'
-folder2 = work_path + task + '/Ara13_Results'
-folder3 = work_path + task + '/AraRPI_Results'
- 
 
 # three folders, use to store the output
 fold_name1 = 'Ara12_Results'
@@ -29,33 +27,6 @@ fold_name2 = 'Ara13_Results'
 fold_name3 = 'AraRPI_Results'
 
 
-
-
-
-
-
-def mkdir(path):
- 
-	folder = os.path.exists(path)
- 
-	if not folder:                   
-		os.makedirs(path)            
-		print ("---  new folder created  ---")
- 
-	else:
-		print ("---  There is a folder!  ---")
-		
-
-def file_names(path):
-    list_a = []
-    names = os.listdir(path)
-    # count = 0
-    for i in names:
-        tmp = i.split('_')
-        if len(tmp) >= 3:
-            if i.split('_')[2] == 'rgb.png':
-                list_a.append(i)
-    return list_a
 
 def rect_in(pos):# delete small rectangles which all include in big rectangles
     # x,y,w,h
@@ -71,17 +42,12 @@ def rect_in(pos):# delete small rectangles which all include in big rectangles
         pos.remove(i)
     return pos
 
-def mean(data):
-    sum1 = 0
-    for i in data:
-        sum1 = sum1 + data
-    return round(sum1/len(data),2)
     
 
 
 
 
-def operator(img,name,fold_name,task,mode):
+def operator(img,out,name,mode):
     ## convert to hsv
     list_p = []
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
@@ -194,57 +160,70 @@ def operator(img,name,fold_name,task,mode):
     if mode == 3:
         precision = 24/count
     ## save 
-    work_path = os.getcwd() + task + '/' + fold_name
-    tmp = name.split('_')[1]
-    np.savetxt(work_path + '/' + tmp + '_.csv', csv, delimiter=",",fmt = '%d')
-    cv2.imwrite(work_path + '/' + tmp + '_rect.png', ori)
-    cv2.imwrite(work_path + '/' + tmp + '_green.png', green)
+    # work_path = os.getcwd() + task + '/' + fold_name
+    # tmp = name.split('_')[1]
+    tmp = str(mode)
+    np.savetxt(out + '/' + name + '_.csv', csv, delimiter=",",fmt = '%d')
+    cv2.imwrite(out + '/' + name + '_rect.png', ori)
+    cv2.imwrite(out + '/' + name + '_green.png', green)
     # cv2.imwrite(work_path + '\\' + tmp + '_gray.png',gray)
     return count,precision 
 
 # create four folders    
-mkdir(folder)
-mkdir(folder1)
-mkdir(folder2)
-mkdir(folder3)
 
+# Area_Ara12 = []
+# Area_Ara13 = []
+# Area_RPI = []
+# precision_12 = []
+# precision_13 = []
+# precision_RPI = []
 
-list_Ara12 = file_names(work_path + path1)
-list_Ara13 = file_names(work_path + path2)
-list_RPI = file_names(work_path + path3)
-
-
-Area_Ara12 = []
-Area_Ara13 = []
-Area_RPI = []
-precision_12 = []
-precision_13 = []
-precision_RPI = []
 # read images from three folders
-for i in list_Ara12:
-    img = cv2.imread(work_path+path1+i)
-    result,precision = operator(img,i,fold_name1,task,1)
-    Area_Ara12.append(result)
-    precision_12.append(precision)
-print('Average precision of Ara2012 is {}'.format(round(np.mean(precision_12),3)))
+# for i in list_Ara12:
+#     img = cv2.imread(work_path+path1+i)
+#     result,precision = operator(img,i,fold_name1,task,1)
+#     Area_Ara12.append(result)
+#     precision_12.append(precision)
+# print('Average precision of Ara2012 is {}'.format(round(np.mean(precision_12),3)))
 
-for i in list_Ara13:
-    img = cv2.imread(work_path+path2+i)
-    result,precision = operator(img,i,fold_name2,task,2)
-    Area_Ara13.append(result)
-    precision_13.append(precision)
-print('Average precision of Canon is {}'.format(round( np.mean(precision_13),3 )))
+# for i in list_Ara13:
+#     img = cv2.imread(work_path+path2+i)
+#     result,precision = operator(img,i,fold_name2,task,2)
+#     Area_Ara13.append(result)
+#     precision_13.append(precision)
+# print('Average precision of Canon is {}'.format(round( np.mean(precision_13),3 )))
 
-for i in list_RPI:
-    img = cv2.imread(work_path+path3+i)
-    result,precision = operator(img,i,fold_name3,task,3)
-    Area_RPI.append(result)
-    precision_RPI.append(precision)
-print('Average precision of RPi is {}'.format(round(np.mean(precision_RPI),3)))
+# for i in list_RPI:
+#     img = cv2.imread(work_path+path3+i)
+#     result,precision = operator(img,i,fold_name3,task,3)
+#     Area_RPI.append(result)
+#     precision_RPI.append(precision)
+# print('Average precision of RPi is {}'.format(round(np.mean(precision_RPI),3)))
 # print numbers of plants found in the three datasets
-print('number of plants found in Ara2012:')
-print(Area_Ara12)
-print('number of plants found in Canon:')
-print(Area_Ara13)
-print('number of plants found in RPi:')
-print(Area_RPI)
+# print('number of plants found in Ara2012:')
+# print(Area_Ara12)
+# print('number of plants found in Canon:')
+# print(Area_Ara13)
+# print('number of plants found in RPi:')
+# print(Area_RPI)
+
+if __name__=='__main__':
+    path1 = base_path + path1
+    path2 = base_path + path2
+    path3 = base_path + path3
+    file_2012 = '/ara2012_tray15_rgb.png'
+    file_canon = '/ara2013_tray27_rgb.png'
+    file_RPi = '/ara2013_tray27_rgb.png'
+    img1 = cv2.imread(path1 + file_2012)
+    img2 = cv2.imread(path2 + file_canon)
+    img3 = cv2.imread(path3 + file_RPi)
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
+    count,_ = operator(img1,output_path,'2012',1)
+    print('{} plants are found'.format(count))
+    count,_ = operator(img2,output_path,'Canon',2)
+    print('{} plants are found'.format(count))
+    count,_ = operator(img3,output_path,'RPi',3)
+    print('{} plants are found'.format(count))
+
+
