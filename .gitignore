@@ -129,6 +129,7 @@ dmypy.json
 .pyre/
 
 *dataset*/
+task3/leaf
 
 .vscode
 .vscode/*
