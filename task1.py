@@ -3,9 +3,9 @@ import numpy as np
 import os
 
 ## Read
-path1 = '/Tray\Ara2012/'
-path2 = '/Tray\Ara2013-Canon/'
-path3 = '/Tray\Ara2013-RPi/'
+path1 = '/Tray/Ara2012/'
+path2 = '/Tray/Ara2013-Canon/'
+path3 = '/Tray/Ara2013-RPi/'
 
 ###########################################
 ## change work path here !!!
