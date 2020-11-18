@@ -7,7 +7,7 @@ from sklearn.svm import LinearSVC
 from sklearn import metrics
 from collections import defaultdict
 base_path = './Plant_Phenotyping_Datasets'
-
+output_path='./task2_out'
 
 if __name__=='__main__':
     path1=base_path + '/Tray/Ara2012'
@@ -16,10 +16,14 @@ if __name__=='__main__':
     target2012='/ara2012_tray02_fg.png'
     file2013='/ara2013_tray03_rgb.png'
     target2013='/ara2013_tray03_fg.png'
-    sample_img=cv2.imread(path2+file2013)
-    sample_target=cv2.imread(path2+target2013,0)
+    sample_img=cv2.imread(path1+file2012)
+    sample_target=cv2.imread(path1+target2012,0)
 
-    #cv2.imshow('1',imgs_1[1])
+
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
+
+        #cv2.imshow('1',imgs_1[1])
     #cv2.imshow('2', targets_1[1])
     #cv2.waitKey(0)
 
@@ -31,7 +35,7 @@ if __name__=='__main__':
     mask_name = './task2_out/mask.png'
     cv2.imwrite(mask_name, mask)
     median = cv2.medianBlur(mask, 5)
-    median_name ='./task2_out/median.png'
+    median_name = './task2_out/median.png'
     cv2.imwrite(median_name,median)
 
 
@@ -51,6 +55,3 @@ if __name__=='__main__':
     iou = q['tp'] / ( q['fp'] + q['tp'] + q['fn'])
     print('dice:',dice)
     print('IOU:',iou)
-
-
-
