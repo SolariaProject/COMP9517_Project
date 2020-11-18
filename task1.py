@@ -2,6 +2,36 @@ from cv2 import cv2
 import numpy as np
 import os
 
+## Read
+path1 = '\Tray\Ara2012\\'
+path2 = '\Tray\Ara2013-Canon\\'
+path3 = '\Tray\Ara2013-RPi\\'
+
+###########################################
+## change work path here !!!
+
+work_path = os.getcwd()#get working path
+
+## change work path here !!!
+###########################################
+
+
+task = '\Task1_out'
+folder = work_path + task
+folder1 = work_path + task + '\Ara12_Results'
+folder2 = work_path + task + '\Ara13_Results'
+folder3 = work_path + task + '\AraRPI_Results'
+ 
+
+# three folders, use to store the output
+fold_name1 = 'Ara12_Results'
+fold_name2 = 'Ara13_Results'
+fold_name3 = 'AraRPI_Results'
+
+
+
+
+
 
 
 def mkdir(path):
@@ -169,39 +199,21 @@ def operator(img,name,fold_name,task,mode):
     np.savetxt(work_path + '\\' + tmp + '_.csv', csv, delimiter=",",fmt = '%d')
     cv2.imwrite(work_path + '\\' + tmp + '_rect.png', ori)
     cv2.imwrite(work_path + '\\' + tmp + '_green.png', green)
-    cv2.imwrite(work_path + '\\' + tmp + '_gray.png',gray)
+    # cv2.imwrite(work_path + '\\' + tmp + '_gray.png',gray)
     return count,precision 
 
-      
-
-## Read
-
-
-
-path1 = '\Tray\Ara2012\\'
-
-path2 = '\Tray\Ara2013-Canon\\'
-path3 = '\Tray\Ara2013-RPi\\'
-work_path = os.getcwd()#get working path
-
-task = '\Task1_output'
-fold_name1 = 'Ara12_Results'
-fold_name2 = 'Ara13_Results'
-fold_name3 = 'AraRPI_Results'
-
-task = '\Task1_output'
-folder = work_path + task
-folder1 = work_path + task + '\Ara12_Results'
-folder2 = work_path + task + '\Ara13_Results'
-folder3 = work_path + task + '\AraRPI_Results'
+# create four folders    
 mkdir(folder)
 mkdir(folder1)
 mkdir(folder2)
-mkdir(folder3)  
+mkdir(folder3)
+
 
 list_Ara12 = file_names(work_path + path1)
 list_Ara13 = file_names(work_path + path2)
 list_RPI = file_names(work_path + path3)
+
+
 Area_Ara12 = []
 Area_Ara13 = []
 Area_RPI = []
