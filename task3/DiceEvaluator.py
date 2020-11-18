@@ -3,6 +3,7 @@ from detectron2.data import build_detection_test_loader
 from detectron2.structures import Boxes, BoxMode
 from detectron2.structures.boxes import pairwise_intersection
 import torchvision
+import torch
 
 # modifications of detectron2.structures.pairwise_iou
 def pairwise_dice(boxes1: Boxes, boxes2: Boxes) -> torch.Tensor:
