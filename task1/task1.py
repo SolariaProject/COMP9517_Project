@@ -211,9 +211,9 @@ if __name__=='__main__':
     path1 = base_path + path1
     path2 = base_path + path2
     path3 = base_path + path3
-    file_2012 = '/ara2012_tray15_rgb.png'
-    file_canon = '/ara2013_tray27_rgb.png'
-    file_RPi = '/ara2013_tray27_rgb.png'
+    file_2012 = '/ara2012_tray07_rgb.png'
+    file_canon = '/ara2013_tray07_rgb.png'
+    file_RPi = '/ara2013_tray07_rgb.png'
     img1 = cv2.imread(path1 + file_2012)
     img2 = cv2.imread(path2 + file_canon)
     img3 = cv2.imread(path3 + file_RPi)

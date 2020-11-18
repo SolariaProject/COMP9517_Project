@@ -93,7 +93,7 @@ dataset_dicts = get_leaf_dicts("leaf/val")
 
 os.mkdir('task3_out') 
 
-for d in random.sample(dataset_dicts, 3):
+for d in filter(lambda val: "plant007" in (val['file_name']), dataset_dicts):
     # for d in dataset_dicts:
     im = cv2.imread(d["file_name"])
     # format is documented at https://detectron2.readthedocs.io/tutorials/models.html#model-output-format

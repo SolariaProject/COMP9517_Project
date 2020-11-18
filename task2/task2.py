@@ -13,10 +13,10 @@ os.mkdir('task2_out')
 if __name__=='__main__':
     path1=base_path + '/Tray/Ara2012'
     path2=base_path + '/Tray/Ara2013-Canon'
-    file2012='/ara2012_tray02_rgb.png'
-    target2012='/ara2012_tray02_fg.png'
-    file2013='/ara2013_tray03_rgb.png'
-    target2013='/ara2013_tray03_fg.png'
+    file2012='/ara2012_tray07_rgb.png'
+    target2012='/ara2012_tray07_fg.png'
+    file2013='/ara2013_tray07_rgb.png'
+    target2013='/ara2013_tray07_fg.png'
     sample_img=cv2.imread(path2+file2013)
     sample_target=cv2.imread(path2+target2013,0)
 
@@ -36,22 +36,22 @@ if __name__=='__main__':
     cv2.imwrite(median_name,median)
 
 
-    q = defaultdict(int)
-    for x in range(sample_target.shape[0]):
-        for y in range(sample_target.shape[1]):
-            if sample_target[x][y] == 0 and median[x][y] == 0:
-                q['tn'] += 1
-            if sample_target[x][y] == 255 and median[x][y] == 0:
-                q['fn'] += 1
-            if sample_target[x][y] == 0 and median[x][y] == 255:
-                q['fp'] += 1
-            if sample_target[x][y] == 255 and median[x][y] == 255:
-                q['tp'] += 1
+    # q = defaultdict(int)
+    # for x in range(sample_target.shape[0]):
+    #     for y in range(sample_target.shape[1]):
+    #         if sample_target[x][y] == 0 and median[x][y] == 0:
+    #             q['tn'] += 1
+    #         if sample_target[x][y] == 255 and median[x][y] == 0:
+    #             q['fn'] += 1
+    #         if sample_target[x][y] == 0 and median[x][y] == 255:
+    #             q['fp'] += 1
+    #         if sample_target[x][y] == 255 and median[x][y] == 255:
+    #             q['tp'] += 1
 
-    dice = (2 * q['tp']) / (q['fn'] + q['fp'] + 2 * q['tp'])
-    iou = q['tp'] / ( q['fp'] + q['tp'] + q['fn'])
-    print('dice:',dice)
-    print('IOU:',iou)
+    # dice = (2 * q['tp']) / (q['fn'] + q['fp'] + 2 * q['tp'])
+    # iou = q['tp'] / ( q['fp'] + q['tp'] + q['fn'])
+    # print('dice:',dice)
+    # print('IOU:',iou)
 
 
 
