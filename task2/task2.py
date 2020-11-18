@@ -8,6 +8,7 @@ from sklearn import metrics
 from collections import defaultdict
 base_path = './dataset'
 
+os.mkdir('task2_out')
 
 if __name__=='__main__':
     path1=base_path + '/Tray/Ara2012'
