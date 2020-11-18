@@ -6,12 +6,12 @@ from scipy.cluster.vq import *
 from sklearn.svm import LinearSVC
 from sklearn import metrics
 from collections import defaultdict
-
+base_path = './Plant_Phenotyping_Datasets'
 
 
 if __name__=='__main__':
-    path1='./Plant_Phenotyping_Datasets/Tray/Ara2012'
-    path2='./Plant_Phenotyping_Datasets/Tray/Ara2013-Canon'
+    path1=base_path + '/Tray/Ara2012'
+    path2=base_path + '/Tray/Ara2013-Canon'
     file2012='/ara2012_tray02_rgb.png'
     target2012='/ara2012_tray02_fg.png'
     file2013='/ara2013_tray03_rgb.png'
