@@ -28,10 +28,10 @@ if __name__=='__main__':
     hsv = cv2.cvtColor(sample_img, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv,lowerb=lower_green,upperb=upper_green)
     #des=cv2.fastNlMeansDenoising(mask,None,10,10,7,21
-    mask_name = base_path + '/mask.png'
+    mask_name = './task2_out/mask.png'
     cv2.imwrite(mask_name, mask)
     median = cv2.medianBlur(mask, 5)
-    median_name = base_path + '/median.png'
+    median_name ='./task2_out/median.png'
     cv2.imwrite(median_name,median)
 
 
