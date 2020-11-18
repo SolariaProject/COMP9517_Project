@@ -13,7 +13,7 @@ pip install split-folders
 pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cu101/torch1.7/index.html (depends on pytorch version)
 ```
 
-task3.sh: copy to new folder and construct new structure for Detectron2
+task3_data.sh: copy to new folder and construct new structure for Detectron2
 
 preprocessed dataset: [Google Drive](https://drive.google.com/file/d/1CaWySqbCG6Qceq-lOnlImHaAIf4x7qfr/view?usp=sharing)
 
