@@ -328,14 +328,25 @@
 % use a multiple column layout for up to three different
 % affiliations
 \author{\IEEEauthorblockN{Yishun Jin}
-\IEEEauthorblockA{yishun.jin@unsw.edu.au\\
+\IEEEauthorblockA{yishun.jin@student.unsw.edu.au\\
 z5235653}
 \and
 \IEEEauthorblockN{Wei Wang}
-\IEEEauthorblockA{}
+\IEEEauthorblockA{wei.wang.1@student.unsw.edu.au\\
+z5200638}
 \and
-\IEEEauthorblockN{xxx}
-\IEEEauthorblockA{xxx@unsw.edu.au}
+\IEEEauthorblockN{Yue He}
+\IEEEauthorblockA{yue.he1@student.unsw.edu.au\\
+z5243835}
+\and
+\IEEEauthorblockN{Mingxi Shen}
+\IEEEauthorblockA{mingxi.shen@student.unsw.edu.au\\
+z5243140}
+\and
+\IEEEauthorblockN{Mingqian Lin}
+\IEEEauthorblockA{mingqian.lin@student.unsw.edu.au\\
+z5240524}
+\and
 }
 
 
@@ -345,19 +356,51 @@ z5235653}
 
 
 \section{Introduction}
-intro for dataset
+
+Our project aims to finish three tasks
+
+\begin{enumerate}
+\item Locate the plants on the tray.
+\item Segment the plants from the background.
+\item Leaf segmentation.
+\end{enumerate}
+
+All the tasks are using the Plant Phenotyping Dataset. This dataset provides us with images, foreground, and the leaf segmentation. So we can evaluate all the tasks after finished each one. All the tasks are using different methods, and these methods will be explained in the following content.
 
 
 \section{Literature Review}
 
-For task 3, we used instance segmentation \cite{Hafiz_2020} which is an approach that identifies, for every pixel, a belonging instance of the object.
-There are many ways to approach instance segmentation, for example, K-Means clustering algorithm, histogram-based methods, edge detection, and also deep learning methods. The segmentation of the foreground can be achieved using non-machine learning method. But when it comes to the segmentation of leaves inside of the foreground, most methods available are usually machine learning methods. Therefore, to achieve the goal, we used a deep learning framework from facebook called  \textbf{Detectron2}. 
+Task 1 uses color extraction to deal with these photos. The photos of different images are shot in different environment, and also, they are not in the same size, it means that we may have to use different parameters while treating these three datasets. Also, we should think carefully on what kind of color space to use. For example, hsv or rgblab.
+
+The task 2 uses the combination of color extraction and image denoising to do the segmentation. Suitable image segmentation techniques are key technologies to solve the problem \cite{pal1993review}. Previous research has established that mean shift algorithm has good performance for image segmentation, while watershed algorithm also has tremendous benefits. Mean shift algorithm, like the K-Means algorithm, is a clustering algorithm based on clustering centers. The difference is that the final clustering effect of the Mean Shift algorithm is not affected by the initial cluster center. Essentially, it is a kernel density estimation algorithm that moves each point to the local maximum point of the density function, which has achieved many successful applications in the field of image segmentation, such as tracking vehicle changing in size \cite{peng2005automatic}. Watershed algorithm is also a typical image region segmentation method. Its basic idea is to treat the gray value of each pixel in the image as altitude, the boundary of each local minimum and its influence area is called a watershed. Then connect the pixels with similar spatial positions and similar gray values to form a closed contour. There are relatively studies in the area of PET images segmentation \cite{riddell1999watershed}.
+
+For task 3, we used instance segmentation \cite{Hafiz_2020} which is an approach that identifies, for every pixel, a belonging instance of the object. There are many ways to approach instance segmentation, for example, K-Means clustering algorithm, histogram-based methods, edge detection, and also deep learning methods. The segmentation of the foreground can be achieved using non-machine learning method. But when it comes to the segmentation of leaves inside of the foreground, most methods available are usually machine learning methods. Therefore, to achieve the goal, we used a deep learning framework from facebook called  \textbf{Detectron2}. 
 
 \section{Methods}
 
-\subsection{Task 1}
+\subsection{Task 1 Color Extraction and Find Contour}
 
-\subsection{Task 2}
+We use four steps to separate green color from the background.
+Step one, we convert images’ color space into hsv. Step two, we use \verb|cv2.inRange| function to extract green color. Step three, we turn the output of step two into grayscale image. Step four, \verb|cv2.findCounters| function is used to find rectangles.
+Of course, above are just an ideal experiment process. Filtering noise is the biggest challenge. To get rid of interference of noise, we set a dynamic boundary of rectangles' size. We choose top 30 largest rectangles and calculate the average size. For Ara2012 dataset, we choose average size/4 to be the lower limit of rectangles' area, and for the rest two datasets, we choose 1/25 average size. This is because plants in Ara2012 are almost same in size while plants’ sizes in Canon and RPi are very different. Some plants are small and even not growing, some plants are big and growing rapidly, this makes average size/4 much bigger than baby plants, so we have to reduce the lower limit to average size/25.
+Although all the baby plants can be detected by reducing the lower limit, moss will also be included. Because of this, we have to think of a way to filter out moss. As moss is always connected together, it will cover most area of the rectangle while plants only cover below 60\% area of the rectangle, so we calculate the mean value of rectangle’s blue channel, and find that moss always has higher value than plants. After setting a parameter to limit the upper bound of rectangle’s mean value on blue channel, we finally get a good result.
+
+\subsection{Task 2 Image Segmentation}
+The task 2 uses two techniques: color space and image denoising.
+
+\subsubsection{Color Space}
+Color space is an abstract mathematical model that uses a set of values to represent colors. Generally, RGB is the color space we use the most - an image is represented by three channels, namely red (R), green (G) and blue (B). Combining these three colors in different forms can form almost all other colors. Nevertheless, the RGB model is not intuitive enough to continuously change colors, usually all attribute values have to be changed. Besides, RGB is greatly affected by brightness. Therefore, RGB color space is suitable for image display, but not very suitable for image processing. Compared to RGB, HSV color space is more frequently used in image processing. HSV expresses color image by three parts: Hue, Saturation, Value. HSV model is shown in figure \ref{fig_HSV_model}
+
+\begin{figure}
+    \centering
+    \includegraphics[]{img/hsv.jpg}
+    \caption{The HSV Model}
+    \label{fig_HSV_model}
+\end{figure}
+
+\subsubsection{Image Denoising}
+Image denoising methods have always been a research focus in image processing. Unfortunately, the current denoising algorithm does not have a perfect solution in practical applications \cite{buades2005review}. There are usually different denoising methods for different noises. In this task, there may be some other small plants in the soil after the green is extracted. We need to remove it as much as possible. Common denoising methods include mean filtering, Gaussian filtering, and median filtering. 
+
 
 \subsection{Task 3 Instance Segmentation}
 
@@ -395,18 +438,30 @@ And the results look pretty good.
 \section{Experimental Setup}
 \subsection{Task 1}
 
+To extract green color from background, we choose some points from plants and read their channels. Then, use the \verb|inRange| function to test the result. This process will be repeated for 10 or even more times before a proper parameter is found, which can separate green from the background.  The next step is to test other parameters like minimum rectangle size and the boundary of blue channel’s mean value.
+As for evaluating the result, two criteria are used to evaluate this solution, the first thing is that it can count the right number of plants, and the second is that the rectangle’s accuracy. We use AP (Average Precision) to evaluate our solution.
+
 \subsection{Task2}
+
+This experiment runs under Windows 10 environment. Python version is 3.6. IDE is Pycharm.
+In this experiment, some python libraries are imported to help complete the experiment. The \verb|os| library is used to import input file. And the \verb|NumPy| is a common library for array calculation. Open CV is the core library, which encapsulates many common algorithms in image processing and computer vision. 
+
+In this task, over 40 images are used to test the algorithm. These images contain many groups of small plants growing in trays, with different shapes and sizes. This series of pictures describes and records the growth process of plants.
+
+The implementation will be evaluated by Dice Similarity Coefficient (DSC) and Intersection over Union (IOU) measures. DSC and IOU are two indicators used to measure set similarity. Dice=(2TP)/(FP+FN+2TP), IOU=(TP)/(FP+TP+FN). It can be concluded by calculation that DSC is usually higher than IOU.
 
 \subsection{Task 3}
 
 There are two major problems we've met when finishing this task: 
+
 \begin{itemize}
 \item Prepare data for training
 \item Evaluating model
 \end{itemize}
+
 The reason why the preparation of data becomes hard is because the model we used requires a JSON file to describe features. And the JSON file consists of lots of information, including the names of the files, sizes of files and a few points containing the contours of desired objects. It takes several steps to convert the images to JSON file. 
 
-We first split a label image into several parts \ref{fig_conversion_1}. This allows us to find the contours of the leaves.
+We first split a label image into several parts. This allows us to find the contours of the leaves. The result is shown in figure  \ref{fig_conversion_1}.
 
 \begin{figure}[h!]
     \centering
@@ -414,7 +469,8 @@ We first split a label image into several parts \ref{fig_conversion_1}. This all
     \caption{Pick single leaves}
     \label{fig_conversion_1}
 \end{figure}
-To find the contours of the leaves, we can use \verb|cv2.Canny| or \verb|cv2.findContours|. But as the model only need a few points describing the contours, we pick \verb|cv2.findContours| with parameter \verb|method| set to \verb|cv2.CHAIN_APPROX_SIMPLE| and \verb|mode| set to \verb|cv2.RETR_EXTERNAL|. This will generate a series of points denoting a polygon which contains the leaf. 
+
+To find the contours of the leaves, we can use \verb|cv2.Canny| or \verb|cv2.findContours|. But as the model only need a few points describing the contours, we pick \verb|cv2.findContours| with parameter \verb|method| set to \verb|cv2.CHAIN_APPROX_SIMPLE| and \verb|mode| set to \verb|cv2.RETR_EXTERNAL|. This will generate a series of points denoting a polygon which contains the leaf. The figure \ref{fig_conversion_2} shows the result of label 2 in the figure \ref{fig_conversion_1}.
 
 \begin{figure}[h!]
     \centering
@@ -422,6 +478,7 @@ To find the contours of the leaves, we can use \verb|cv2.Canny| or \verb|cv2.fin
     \caption{After Processing }
     \label{fig_conversion_2}
 \end{figure}
+
 After we got the contours, we can just pick the points in the image and then put them into the JSON file, the preparation of the training data is done.
 
 The second problem is the evaluation. Because we performed the conversion from label images to JSON file, we don't know the relationship of the labels between the output of the model and given labels. Also, the model is not giving us any information about the relation needed for evaluation - which colour maps back to which section of the JSON file. 
@@ -432,26 +489,117 @@ Finally, we found the model provided us with the \verb|COCOEvaluator|, which use
     J(A,B)=\frac{|A\cap B|}{|A\cup B|}
     \label{eq:IoU}
 \end{equation}
+
 You can see this evaluation is pretty close to \textbf{Dice's coefficient}. 
 
 \begin{equation}
 	DSC = \frac{2|X \cap Y|}{|X| + |Y|}
 	\label{eq:Dice}
 \end{equation}
+
 So we looked into the source code of the \verb|COCOEvaluator| and we found a function called \verb|pairwise_iou| which evaluates the result with equation 1. This makes things easier, we can create a \verb|DiceEvaluator| by replacing different function. But we don't want to modify the source code because this makes code harder to maintain. So we created a class called \verb|DiceEvaluator| which inherits the \verb|COCOEvaluator| and a function called \verb|pairwise_dice| which replaces the \verb|pairwise_iou|. 
 
-Though this solution provides us with some flexibility, we are not having fully control over the output. This means that the \verb|DiceEvaluator| always suggests the result is calculated using formula 1. So please notice, in the next section, the output are actually using \textbf{Dice's coefficient} to evaluate the model, not the \textbf{IoU} 
+Though this solution provides us with some flexibility, we are not having fully control over the output. We used the \verb|redirect_stdout| to change the default output. 
 
 
 \section{Results and Discussion}
 
 \subsection{Task 1}
+For the first task, Let us show the result first. While counting plants, results for Ara2012 and Canon datasets are good, shown in figure \ref{task1_plant_count}, the first line is the number of plants in Ara2012, the second line is for Canon and the third line is for RPi. As you can see, results for Ara2012 is almost perfect. The last picture’s mistake is because two plants’ leaves get too close to each other, so the program regards two plants as one plant
+
+When it comes to Canon dataset, the result is not bad. You can see for the first 6 images, the number of plants is more than 24(there are 24 plants in each image). The most common mistake appears in Canon dataset is shown in Figure \ref{fig:task1_eg_mis_class}, and its hsv image Figure \ref{fig:task1_eg_mis_class} will show you how this mistake happens, although the pot’s edge seems really different in normal(rgb) way, while changing the color area to hsv, it’s easy to mix pot and plants together, because part of 
+the pot’s edge is green. And this is what we mentioned before, this size of the wrong bounding boxes may probably  bigger than the baby plants, so this mistake can’t be solved by setting a minimum size.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.9\linewidth]{img/task1_plant_count.png}
+\caption{Plant Count}
+\label{task1_plant_count}
+\end{figure}
+\begin{figure}[h!]
+\centering
+\begin{subfigure}[h!]{0.24\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{img/task1_mis_classification.png}
+\end{subfigure}
+\hfill
+\begin{subfigure}[h!]{0.24\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{img/task1_mis_classification_enhanced.jpg}
+\end{subfigure}
+\caption{Wrong area counted}
+\label{fig:task1_eg_mis_class}
+\end{figure}
+
+Fortunately, when plants grow bigger, the average size of plants increases. So this kind of noise will be too small to be detected, you can see in the last 16 images, no error happens in figure \ref{task1_plant_count}.  
+	As for RPi dataset, the result not as good as Canon’s, you can see only 6 images are considered to have 24 plants. The most common errors are shown in Figure \ref{fig:task1_good_eg}. In Figure\ref{fig:task1_good_eg}, a hsv image is shown, it’s obvious that the plant’s stem and pot has the same color, so in RPi dataset, the biggest challenge comes from pot, not moss. This is because the light changes in different datasets - RPi dataset is brighter than Canon dataset. 
+    
+\begin{figure}[h!]
+\centering
+\begin{subfigure}[h!]{0.24\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{img/task1_good_class.png}
+\end{subfigure}
+\hfill
+\begin{subfigure}[h!]{0.24\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{img/task1_good_class_enhanced.png}
+\end{subfigure}
+\caption{When works properly}
+\label{fig:task1_good_eg}
+\end{figure}
+To wipe out pot’s noise, no red is allowed to show up, but this will damage part of the stem and create an disconnected part: a leaf. What’s worse, these disconnected leaves are even bigger than baby plants, which makes it really hard to filter out. 
+
+To solve this problem, we turn to rgblab, hope can have a better result. The result shown in Figure \ref{task1_no_pot} seems perfect, this is the result of using rgblab color space. But if you take a close look, although pot is obviously different from leaves, stem’s color is similar to some background noise. We finally choose hsv because background noise is more disgusting and harder to filter, it brings more errors.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.7\linewidth]{img/task1_no_pot.jpg}
+\caption{Foreground}
+\label{task1_no_pot}
+\end{figure}
+
+The average precision of these three datasets are shown in figure \ref{task1_eva}. You can see even we get some mistakes, the accuracy is still high, which means our solution works fine.
+
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.7\linewidth]{img/task1_eva.png}
+\caption{Result}
+\label{task1_eva}
+\end{figure}
 
 \subsection{Task 2}
+We convert RGB image to HSV color space and apply medium filter for denoising, for most runs, results are shown to be over 95 DSC, 90 IOU, which is a very high accuracy rate. The sample image after extracting green color is shown in figure \ref{task2_binary_graph_after_extracting_green_color}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.9\linewidth]{img/task2_binary_graph _after_extracting_green_color.png}
+\caption{Binary graph after extracting green color}
+\label{task2_binary_graph_after_extracting_green_color}
+\end{figure}
+Also, image after medium filtering, as shown in Figure \ref{task2_binary_graph_after_medium_filtering} below:
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.9\linewidth]{img/task2_binary_graph_after_medium_filtering.png}
+\caption{Binary graph after medium filtering}
+\label{task2_binary_graph_after_medium_filtering}
+\end{figure}
+DSC and IOU result is shown in Figure \ref{task2_dice_and_iou}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.5\linewidth]{img/task2_dice_and_iou.png}
+\caption{Evaluation result of sample image}
+\label{task2_dice_and_iou}
+\end{figure}
+
+Overall, these results indicate that color space methods have positive effects in this experiment. In the process, adjusting the value of HSV is a very important point. According to observations, the green components in the soil are generally deeper than the plants themselves; therefore the brightness threshold can be adjusted to obtain a better filtering effect. For filtering, it is necessary to select a method and parameters suitable for the shape of the picture. Otherwise, there are many methods that are also considered effective to accomplish this task, such as training a classifier. Also in \verb|opencv-python|, using the rectangle function to frame the plants seems to be a way to get more accurate results. In this experiment, however, there are still a lot of green impurities in the plant frame so the actual effect is not ideal. Hope to have further development in image segmentation algorithm.
 
 \subsection{Task 3 Instance Segmentation}
 
-TensorBoard is used to visualize our training process.
+The \verb|TensorBoard| is used to visualize our training process.
 Shown on Fig.\ref{fig:loss for training process}.
 During the increase of iterations, the model gets stable.
 And the total loss drops ideally.
@@ -571,20 +719,23 @@ and some leaves are overlapped with each other. Even human beings cannot disting
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\linewidth]{img/iou_evl.png}
-    \caption{Evaluation IoU}
+    \includegraphics[width=\linewidth]{img/dice_evl.png}
+    \caption{Evaluation Dice}
     \label{fig_ap}
 \end{figure}
 
 
 \section{Conclusion}
 
-blabla
+From these three datasets, it’s clear that using color extracting is not a good choice for task 1. Even with the same plants, results would be different if the light gets brighter or darker. Noise from other plants and soil or other kinds of background are also harmful to results. So we strongly recommend not to use color extracting while dealing with these sort of projects. The same situation also happened to task 2. The task 3 used deep learning method. Though the results are mostly satisfying, the model is more complicated to be understand. 
+
+And the last thing I want to mention about is the team working. Through this teamwork, every member has benefited a lot. This time we used Github to achieve effective and high-speed processing of project version management. Though some members on the team were not familiar with Github at first, they gradually learned to upload codes, create branches, push updates, etc., which are very helpful for future project collaboration. At the beginning we assigned 3 tasks to members independently, everyone completes their own part. But as the project progressed, the correlation and dependency between the tasks were discovered and mined, then we increased the communication between the teams, which greatly improved the efficiency. For instance, task2 can use the method of task1 to frame plants as a solution to increase accuracy. In the whole process, however, we also encountered many difficulties. When merging the codes and the report, the format inconsistency took us much time to reformat. This also makes us realize that it is important to regulate a unified standard at the beginning of a team project. All in all, this project has not only improved our professional knowledge and application capabilities in computer vision, but also increased our experience in teamwork. 
 
 \section{Contribution of Group Members}
 
-
-Task 3:  Yishun Jin, Wei Wang
+Task 1: Yue He
+Task 2: Mingxi Shen, Mingqian Lin
+Task 3: Yishun Jin, Wei Wang
 
 
 \bibliographystyle{IEEEtran}
