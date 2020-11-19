@@ -406,7 +406,7 @@ Image denoising methods have always been a research focus in image processing. U
 
 It is a multi-instance segmentation problem. We use \textbf{Detectron 2}\cite{wu2019detectron2} which is FAIR's next-generation platform for object detection and segmentation. And we use \textbf{Mask-RCNN}\cite{He_2017} to approach our instance segmentation.
 
-\textbf{Mask R-CNN} is a state-of-the-art model for instance segmentation. It can be easily considered as ResNet-FPN + Fast-RCNN + mask.
+\textbf{Mask R-CNN} is a great solution for instance segmentation. It can be easily considered as ResNet-FPN + Fast-RCNN + mask.
 
 \begin{figure}[h!]
 \centering
@@ -415,14 +415,14 @@ It is a multi-instance segmentation problem. We use \textbf{Detectron 2}\cite{wu
 \label{fig_mask-rcnn}
 \end{figure}
 
-To understand Mask R-CNN, it works mainly in two stages:
+There are mainly two stages in Mask-RCNN network:
 
-\textbf{Stage1:} The first stage consists of two networks, backbone (ResNet, VGG, Inception, etc..) and region proposal network. These networks are used to find the regions of interest.
+\textbf{Stage1:} This includes backbone (which is mainly CNN network) and region proposal network. These networks are used to find the regions of interest.
 
-\textbf{Stage2:} In the second stage, the network predicts bounding boxes which is similar to what we have done in Task 1 and object class for each of the proposed region obtained in stage1, in our project this is only one object plant leaf. 
+\textbf{Stage2:} The network does the object detection part, predicts bounding boxes which is similar to what we have done in Task 1.
+Object class for each of the proposed region is predicted, in our project there is only one object which is plant leaf. 
 Either RoI pool or RoIAlign method is used to fix the size of each proposal region.
-The output from RoIAlign layer is then fed into Mask head, which consists of two convolution layers.
-Mask can be generated for each RoI, thus segmenting leaves pixel-to-pixel.
+To generate image masks, the output from RoIAlign layer sent to Mask head.
 
 For our implementation, we convert *\_label.png into mask images and write an adapter for loading dataset.
 the original dataset can be split into a training set and testing set by our python script.
@@ -430,10 +430,6 @@ the original dataset can be split into a training set and testing set by our pyt
 Because our dataset is not large, and many information like image features can be commonly reused by the different datasets, 
 transfer learning \cite{pan2009survey} is used in this project for the training process.
 Use the provided pre-trained weight for MS COCO dataset\cite{Lin_2014}.
-
-After data preparation and model construction, the next step is to train the mask-rcnn network.
-The training phase is a process to update model parameters and alternate forward and backward propagation.
-And the results look pretty good.
 
 \section{Experimental Setup}
 \subsection{Task 1}
@@ -483,7 +479,7 @@ After we got the contours, we can just pick the points in the image and then put
 
 The second problem is the evaluation. Because we performed the conversion from label images to JSON file, we don't know the relationship of the labels between the output of the model and given labels. Also, the model is not giving us any information about the relation needed for evaluation - which colour maps back to which section of the JSON file. 
 
-Finally, we found the model provided us with the \verb|COCOEvaluator|, which uses the Intersection over Union (\textbf{IoU}) to do the assessment. The Intersection over Union (\textbf{IoU}), also known as \textbf{Jaccard index} is a statistic used for gauging the similarity and diversity of sample sets. The \textbf{Jaccard index} measures similarity between finite sample sets, and is defined as the size of the intersection divided by the size of the union of the sample sets:
+Finally, we found the model provided us with the \verb|COCOEvaluator|, which uses the Intersection over Union (\textbf{IoU}) to do the assessment. 
 
 \begin{equation}
     J(A,B)=\frac{|A\cap B|}{|A\cup B|}
@@ -732,6 +728,10 @@ From these three datasets, it’s clear that using color extracting is not a goo
 And the last thing I want to mention about is the team working. Through this teamwork, every member has benefited a lot. This time we used Github to achieve effective and high-speed processing of project version management. Though some members on the team were not familiar with Github at first, they gradually learned to upload codes, create branches, push updates, etc., which are very helpful for future project collaboration. At the beginning we assigned 3 tasks to members independently, everyone completes their own part. But as the project progressed, the correlation and dependency between the tasks were discovered and mined, then we increased the communication between the teams, which greatly improved the efficiency. For instance, task2 can use the method of task1 to frame plants as a solution to increase accuracy. In the whole process, however, we also encountered many difficulties. When merging the codes and the report, the format inconsistency took us much time to reformat. This also makes us realize that it is important to regulate a unified standard at the beginning of a team project. All in all, this project has not only improved our professional knowledge and application capabilities in computer vision, but also increased our experience in teamwork. 
 
 \section{Contribution of Group Members}
+
+our repo: \url{https://github.com/SolariaProject/COMP9517_Project.git}
+
+All the commit information can be found in this repo git log.
 
 Task 1: Yue He
 Task 2: Mingxi Shen, Mingqian Lin
